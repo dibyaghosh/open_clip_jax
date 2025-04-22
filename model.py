@@ -10,6 +10,7 @@ from functools import partial
 from dataclasses import dataclass
 import numpy as np
 import jax.numpy as jnp
+import flax
 
 
 
@@ -537,3 +538,7 @@ class CLIP(nn.Module):
         text_features = self.encode_text(text, train, normalize=True)
         logit_scale = jnp.exp(self.logit_scale)
         return logit_scale * image_features @ text_features.T
+
+def reformat_params(flat_torch_params: dict):
+    params = {k.replace('resblocks.', 'resblocks_'): v for k, v in flat_torch_params.items()}
+    return flax.traverse_util.unflatten_dict(params, sep='.')

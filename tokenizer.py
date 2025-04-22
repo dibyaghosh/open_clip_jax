@@ -11,7 +11,10 @@ from functools import lru_cache, partial
 from typing import Callable, List, Optional, Union
 import warnings
 
-import ftfy
+try:
+    import ftfy
+except ImportError:
+    ftfy = None
 import numpy as np
 import regex as re
 import torch
